@@ -6,6 +6,11 @@
   <meta name="theme-color" content="#6366f1" />
   <title>移动机器人路径规划仿真器 · 网页演示</title>
   <meta name="description" content="在浏览器里交互式演示移动机器人路径规划：画障碍、设起终点，A*/Dijkstra/贪婪三种算法实时搜索最短无碰撞路径，并动画展示搜索过程与机器人行走。" />
+  <meta property="og:title" content="移动机器人路径规划仿真器" />
+  <meta property="og:description" content="画障碍、设起终点，看 A* 实时规划最短路径 · 三种算法一键对比" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://WenxuanZhong.github.io/robot-path-planner/web/" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -54,7 +59,7 @@
           <button data-tool="start" aria-pressed="false">设起点</button>
           <button data-tool="goal" aria-pressed="false">设终点</button>
         </div>
-        <p class="hint">在地图上按住拖动即可绘制。电脑端可用右键拖动快速擦除。</p>
+        <p class="hint">在地图上按住拖动即可绘制。电脑右键拖动快速擦除；手机端先选工具再触屏画。</p>
       </div>
 
       <div class="group">
@@ -108,7 +113,7 @@
 
   <footer class="site-footer">
     <span>纯前端实现 · 原生画布 + 原生脚本 · 零依赖</span>
-    <a id="repoLink" href="../" rel="noopener">查看源码 ↗</a>
+    <a id="repoLink" href="https://github.com/WenxuanZhong/robot-path-planner" target="_blank" rel="noopener">查看源码 ↗</a>
   </footer>
 
   <script src="pathfinding.js"></script>

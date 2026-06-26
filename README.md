@@ -6,7 +6,7 @@
 > 一套算法，两种界面：**浏览器在线版**（零安装、手机可开）+ **pygame 桌面版**；算法与界面完全解耦，并用 Node 对 Python 实现做了逐格交叉验证。
 
 ### 🔗 在线演示（零安装，手机也能开）
-**👉 [点此打开在线演示](__LIVE_URL__)** —— 在浏览器里直接画障碍、设起终点，看 A\* 实时搜索并让机器人走过去。
+**👉 [点此打开在线演示](https://WenxuanZhong.github.io/robot-path-planner/web/)** —— 在浏览器里直接画障碍、设起终点，看 A\* 实时搜索并让机器人走过去。
 
 ---
 
@@ -22,7 +22,7 @@
 ## 🎬 界面预览
 ![界面预览](docs/preview.png)
 
-> 上图为程序运行界面。**想直接体验交互动画**：打开上方的 [在线演示](__LIVE_URL__) 即可（无需安装）。
+> 上图为程序运行界面。**想直接体验交互动画**：打开上方的 [在线演示](https://WenxuanZhong.github.io/robot-path-planner/web/) 即可（无需安装）。
 > 想放一段**动态 GIF**：按 `docs/HOW_TO_RECORD_DEMO.txt` 录制，命名为 `demo.gif` 放进 `docs/`，再取消下面这行注释即可。
 >
 > <!-- ![demo](docs/demo.gif) -->
@@ -30,7 +30,7 @@
 ## 🚀 快速开始
 
 **方式一：在线版（推荐，零安装）**
-直接打开 👉 **[在线演示](__LIVE_URL__)**
+直接打开 👉 **[在线演示](https://WenxuanZhong.github.io/robot-path-planner/web/)**
 
 **方式二：本地运行网页版**
 ```bash

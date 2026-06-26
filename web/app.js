@@ -10,10 +10,20 @@
 
   var PF = window.Pathfinding;
 
-  // ---------------- 可调参数 ----------------
-  var ROWS = 20, COLS = 34, CELL = 24;     // 栅格行列与单格内部像素
-  var DEFAULT_START = [10, 5];
-  var DEFAULT_GOAL = [10, 28];
+  // ---------------- 可调参数（根据屏幕宽度自适应）----------------
+  var CELL = 24;
+  var ROWS, COLS;
+  var DEFAULT_START, DEFAULT_GOAL;
+
+  // 窄屏减少列数，让每格在触屏上至少 ~16px，手指画障碍不累
+  (function initGridSize() {
+    var w = window.innerWidth;
+    if (w <= 480)      { COLS = 20; ROWS = 14; }   // 手机竖屏
+    else if (w <= 768) { COLS = 28; ROWS = 16; }   // 平板 / 手机横屏
+    else               { COLS = 34; ROWS = 20; }   // 桌面
+    DEFAULT_START = [Math.floor(ROWS / 2), Math.floor(COLS * 0.15)];
+    DEFAULT_GOAL  = [Math.floor(ROWS / 2), Math.floor(COLS * 0.85)];
+  })();
 
   // ---------------- 配色（与 styles.css 的图例一致）----------------
   var COLORS = {

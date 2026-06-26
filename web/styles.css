@@ -212,6 +212,44 @@ kbd {
   .controls { grid-template-columns: 1fr 1fr 1fr; }
   .btn-primary { grid-column: 1 / -1; }
 }
-@media (max-width: 420px) {
-  .controls { grid-template-columns: 1fr 1fr; }
+
+/* ---------- 响应式：手机 ---------- */
+@media (max-width: 480px) {
+  body { padding: clamp(8px, 2vw, 14px) clamp(6px, 2vw, 10px) 0; }
+
+  .site-header { margin-bottom: 10px; }
+  .site-header h1 { font-size: 1.25rem; }
+  .subtitle { font-size: .8rem; }
+  .tagline { font-size: .84rem; margin-top: 6px; }
+
+  .stage { padding: 10px 8px; }
+  .status { padding: 8px 10px; font-size: .86rem; margin: 10px 0 4px; }
+  .legend { gap: 5px 10px; font-size: .78rem; }
+  .sw { width: 12px; height: 12px; }
+
+  .group { padding: 10px 10px 12px; }
+  .group h2 { font-size: .72rem; margin-bottom: 8px; }
+
+  .seg button { padding: 7px 6px; font-size: .82rem; border-radius: 8px; }
+  .seg button small { font-size: .65rem; }
+  .hint { font-size: .74rem; }
+
+  .controls { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .btn { padding: 9px 8px; font-size: .84rem; border-radius: 8px; }
+  .btn-primary { grid-column: 1 / -1; }
+  .btn-accent { font-size: .84rem; }
+
+  .speed { font-size: .82rem; margin-top: 8px; }
+
+  .metrics > div { padding: 4px 0; }
+  .metrics dt { font-size: .8rem; }
+  .metrics dd { font-size: .88rem; }
+
+  .compare { font-size: .78rem; }
+  .compare th, .compare td { padding: 5px 4px; }
+
+  .shortcuts { font-size: .8rem; }
+  .shortcuts summary { font-size: .82rem; }
+
+  .site-footer { font-size: .78rem; margin: 14px auto; padding-top: 10px; }
 }
