@@ -25,20 +25,20 @@
     DEFAULT_GOAL  = [Math.floor(ROWS / 2), Math.floor(COLS * 0.85)];
   })();
 
-  // ---------------- 配色（深色科技风，与 styles.css 一致）----------------
+  // ---------------- 配色（清新风，与 styles.css 一致）----------------
   var COLORS = {
-    bg: '#0e1729',
-    grid: 'rgba(99,130,191,.12)',
-    wall: '#334155',
-    start: '#34d399',
-    goal: '#f87171',
-    visited: '#1e3a5f',   // 闭集：已探索 —— 深蓝
-    frontier: '#818cf8',  // 开集：搜索边界 —— 靛蓝发光
-    path: '#fbbf24',      // 金黄
-    robot: '#a78bfa'      // 紫
+    bg: '#ffffff',
+    grid: '#f0f0f0',
+    wall: '#2c3e50',
+    start: '#2ecc71',
+    goal: '#e74c3c',
+    visited: '#d0e1ff',
+    frontier: '#4a7dff',
+    path: '#f0a030',
+    robot: '#8e6ed8'
   };
 
-  var ALGO_NAMES = { astar: 'A*', dijkstra: 'Dijkstra', greedy: '贪婪最佳优先' };
+  var ALGO_NAMES = { astar: 'A*', dijkstra: 'Dijkstra', greedy: '贪婪' };
 
   // ---------------- DOM ----------------
   var canvas = document.getElementById('grid');
@@ -128,12 +128,6 @@
     ctx.fillRect(c * CELL, r * CELL, CELL, CELL);
   }
 
-  function fillCellRounded(r, c, color, inset, rad) {
-    ctx.fillStyle = color;
-    roundRect(c * CELL + inset, r * CELL + inset, CELL - inset * 2, CELL - inset * 2, rad);
-    ctx.fill();
-  }
-
   // ---------------- 渲染 ----------------
   function render() {
     var W = COLS * CELL, H = ROWS * CELL;
@@ -145,33 +139,25 @@
       closedSet.forEach(function (k) {
         var p = k.split(','); fillCell(+p[0], +p[1], COLORS.visited);
       });
-      // 搜索边界（开集）—— 带微光
-      ctx.save();
-      ctx.shadowColor = 'rgba(129,140,248,.5)';
-      ctx.shadowBlur = 6;
+      // 搜索边界（开集）
       frontierSet.forEach(function (k) {
         if (closedSet.has(k)) return;
         var p = k.split(','); fillCell(+p[0], +p[1], COLORS.frontier);
       });
-      ctx.restore();
     }
 
-    // 障碍 —— 圆角块
+    // 障碍
     for (var r = 0; r < ROWS; r++)
       for (var c = 0; c < COLS; c++)
-        if (grid[r][c] === 1) fillCellRounded(r, c, COLORS.wall, 1, 3);
+        if (grid[r][c] === 1) fillCell(r, c, COLORS.wall);
 
-    // 路径（随机器人逐格显现）—— 金色发光
+    // 路径（随机器人逐格显现）
     if (result && result.found && (phase === 'path' || phase === 'done')) {
-      ctx.save();
-      ctx.shadowColor = 'rgba(251,191,36,.45)';
-      ctx.shadowBlur = 8;
       var upto = phase === 'done' ? result.path.length : Math.min(Math.floor(robotPos) + 2, result.path.length);
       for (var i = 0; i < upto; i++) {
         var pc = result.path[i];
-        if (!sameCell(pc, start) && !sameCell(pc, goal)) fillCellRounded(pc[0], pc[1], COLORS.path, 2, 4);
+        if (!sameCell(pc, start) && !sameCell(pc, goal)) fillCell(pc[0], pc[1], COLORS.path);
       }
-      ctx.restore();
     }
 
     // 网格线
@@ -189,27 +175,17 @@
 
   function drawStart() {
     var x = start[1] * CELL, y = start[0] * CELL;
-    ctx.save();
-    ctx.shadowColor = 'rgba(52,211,153,.6)';
-    ctx.shadowBlur = 10;
     ctx.fillStyle = COLORS.start;
-    roundRect(x + 2, y + 2, CELL - 4, CELL - 4, 6); ctx.fill();
-    ctx.restore();
-    // 内圈白点
-    ctx.fillStyle = 'rgba(255,255,255,.9)';
-    ctx.beginPath(); ctx.arc(x + CELL / 2, y + CELL / 2, CELL * 0.15, 0, Math.PI * 2); ctx.fill();
+    roundRect(x + 2, y + 2, CELL - 4, CELL - 4, 5); ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(x + CELL / 2, y + CELL / 2, CELL * 0.14, 0, Math.PI * 2); ctx.fill();
   }
 
   function drawGoal() {
     var x = goal[1] * CELL, y = goal[0] * CELL;
-    ctx.save();
-    ctx.shadowColor = 'rgba(248,113,113,.6)';
-    ctx.shadowBlur = 10;
     ctx.fillStyle = COLORS.goal;
-    roundRect(x + 2, y + 2, CELL - 4, CELL - 4, 6); ctx.fill();
-    ctx.restore();
-    // 靶心
-    ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = 2;
+    roundRect(x + 2, y + 2, CELL - 4, CELL - 4, 5); ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.arc(x + CELL / 2, y + CELL / 2, CELL * 0.18, 0, Math.PI * 2); ctx.stroke();
   }
 
@@ -224,16 +200,10 @@
     var cc = a[1] + (b[1] - a[1]) * frac;
     var x = cc * CELL + CELL / 2, y = rr * CELL + CELL / 2;
 
-    // 外圈发光
-    ctx.save();
-    ctx.shadowColor = 'rgba(167,139,250,.7)';
-    ctx.shadowBlur = 16;
     ctx.fillStyle = COLORS.robot;
-    ctx.beginPath(); ctx.arc(x, y, CELL * 0.38, 0, Math.PI * 2); ctx.fill();
-    ctx.restore();
-    // 高光
-    ctx.fillStyle = 'rgba(255,255,255,.8)';
-    ctx.beginPath(); ctx.arc(x - CELL * 0.08, y - CELL * 0.08, CELL * 0.11, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x, y, CELL * 0.36, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,.85)';
+    ctx.beginPath(); ctx.arc(x - CELL * 0.08, y - CELL * 0.08, CELL * 0.09, 0, Math.PI * 2); ctx.fill();
   }
 
   // ---------------- 搜索动画：由 visited 顺序增量推导 开集/闭集 ----------------
