@@ -372,24 +372,84 @@ kbd {
   .btn-primary { grid-column: 1 / -1; }
 }
 
-/* ---- Responsive: phone ---- */
-@media (max-width: 480px) {
-  body { padding: 14px 10px 0; }
+/* ============================================================
+   手机版 (≤ 520px)
+   目标：画布占满宽度，工具栏紧贴画布下方可快速够到，
+   按钮足够大（≥44px 触摸目标），不需要滚很远才能操作。
+   快捷键面板隐藏（手机不用键盘）。
+   ============================================================ */
+@media (max-width: 520px) {
+  body { padding: 10px 8px 0; }
 
-  .site-header h1 { font-size: 1.2rem; }
-  .tagline { font-size: .84rem; }
-  .site-header { margin-bottom: 12px; }
+  /* 标题缩小 */
+  .site-header { margin-bottom: 8px; }
+  .site-header h1 { font-size: 1.15rem; }
+  .tagline { font-size: .82rem; }
 
-  .stage { padding: 8px; }
-  .status { font-size: .82rem; padding: 7px 10px; }
-  .legend { font-size: .74rem; gap: 4px 10px; }
+  /* 画布区域紧凑 */
+  .stage {
+    padding: 6px;
+    border-radius: 8px;
+  }
+  .canvas-wrap { border-radius: 6px; }
+  .status {
+    font-size: .8rem;
+    padding: 7px 10px;
+    margin: 6px 0 4px;
+  }
+  .legend { font-size: .72rem; gap: 3px 8px; }
+  .sw { width: 10px; height: 10px; }
 
-  .group { padding: 10px 10px 12px; }
-  .seg button { font-size: .78rem; padding: 6px 4px; }
-  .seg button small { font-size: .62rem; }
+  /* 面板卡片更紧凑 */
+  .group {
+    padding: 8px 10px 10px;
+    border-radius: 8px;
+  }
+  .group h2 { font-size: .68rem; margin-bottom: 6px; }
+  .hint { font-size: .72rem; margin-top: 4px; }
 
-  .controls { grid-template-columns: 1fr 1fr; gap: 5px; }
-  .btn { font-size: .8rem; padding: 8px 6px; }
+  /* 工具/算法分段按钮——每个至少 44px 高 */
+  .seg { border-radius: 8px; }
+  .seg button {
+    font-size: .8rem;
+    padding: 10px 4px;
+    min-height: 44px;
+  }
+  .seg button small { font-size: .6rem; }
 
-  .site-footer { font-size: .74rem; }
+  /* 执行按钮——2 列，足够大的触摸区域 */
+  .controls {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .btn {
+    font-size: .82rem;
+    padding: 10px 6px;
+    min-height: 44px;
+  }
+  .btn-primary {
+    grid-column: 1 / -1;
+    padding: 12px 6px;
+    font-size: .9rem;
+  }
+  .btn-compare { min-height: 44px; font-size: .82rem; }
+
+  /* 速度条 */
+  .speed { font-size: .8rem; margin-top: 6px; }
+
+  /* 指标紧凑 */
+  .metrics dt { font-size: .78rem; }
+  .metrics dd { font-size: .86rem; }
+  .metrics > div { padding: 4px 0; }
+
+  /* 对比表 */
+  .compare { font-size: .76rem; }
+  .compare th, .compare td { padding: 5px 4px; }
+  .compare-note { font-size: .72rem; }
+
+  /* 键盘快捷键——手机没键盘，默认收起即可 */
+  .shortcuts { font-size: .76rem; }
+
+  /* 页脚 */
+  .site-footer { font-size: .72rem; margin: 12px auto; }
 }

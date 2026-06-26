@@ -15,11 +15,11 @@
   var ROWS, COLS;
   var DEFAULT_START, DEFAULT_GOAL;
 
-  // 窄屏减少列数，让每格在触屏上至少 ~16px，手指画障碍不累
+  // 窄屏减少列数，让每格在触屏上足够大，手指画障碍不累
   (function initGridSize() {
     var w = window.innerWidth;
-    if (w <= 480)      { COLS = 20; ROWS = 14; }   // 手机竖屏
-    else if (w <= 768) { COLS = 28; ROWS = 16; }   // 平板 / 手机横屏
+    if (w <= 520)      { COLS = 16; ROWS = 12; }   // 手机竖屏——大格子好画
+    else if (w <= 768) { COLS = 24; ROWS = 16; }   // 平板 / 手机横屏
     else               { COLS = 34; ROWS = 20; }   // 桌面
     DEFAULT_START = [Math.floor(ROWS / 2), Math.floor(COLS * 0.15)];
     DEFAULT_GOAL  = [Math.floor(ROWS / 2), Math.floor(COLS * 0.85)];
@@ -510,18 +510,14 @@
 
   window.addEventListener('resize', function () { render(); });
 
-  // ---------------- 启动：放一张可解的地图并自动演示一次 ----------------
+  // ---------------- 启动：空白画布，等用户画 ----------------
   function init() {
     setupCanvas();
     setActive(algoSeg, 'data-algo', algo);
     setActive(toolSeg, 'data-tool', tool);
-    grid = randomMaze(0.22);
+    grid = emptyGrid();
     render();
     updateMetrics();
-    // 稍候自动跑一次 A*，让访客一打开就看到动画
-    setTimeout(function () {
-      if (phase === 'idle') { run(); syncRunButton(); }
-    }, 700);
   }
 
   init();
