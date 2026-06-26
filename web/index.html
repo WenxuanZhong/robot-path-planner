@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#6366f1" />
+  <title>移动机器人路径规划仿真器 · 网页演示</title>
+  <meta name="description" content="在浏览器里交互式演示移动机器人路径规划：画障碍、设起终点，A*/Dijkstra/贪婪三种算法实时搜索最短无碰撞路径，并动画展示搜索过程与机器人行走。" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>移动机器人路径规划仿真器</h1>
+    <p class="subtitle">移动机器人路径规划与避障仿真器</p>
+    <p class="tagline">在可编辑的栅格地图上，机器人用 <b>A*</b> 实时规划最短无碰撞路径。画障碍、设起终点，看它一步步搜索并走过去。</p>
+  </header>
+
+  <main class="app">
+    <!-- 左：画布舞台 -->
+    <section class="stage">
+      <div class="canvas-wrap">
+        <canvas id="grid" aria-label="路径规划栅格地图"></canvas>
+      </div>
+
+      <p id="status" class="status" role="status" aria-live="polite">在网格上画障碍，然后点「运行」看机器人规划最短路径。</p>
+
+      <ul class="legend" aria-label="图例">
+        <li><span class="sw sw-start"></span>起点</li>
+        <li><span class="sw sw-goal"></span>终点</li>
+        <li><span class="sw sw-wall"></span>障碍</li>
+        <li><span class="sw sw-frontier"></span>搜索边界<small>(待探索)</small></li>
+        <li><span class="sw sw-visited"></span>已探索</li>
+        <li><span class="sw sw-path"></span>最短路径</li>
+        <li><span class="sw sw-robot"></span>机器人</li>
+      </ul>
+    </section>
+
+    <!-- 右：控制面板 -->
+    <aside class="panel">
+      <div class="group">
+        <h2>算法</h2>
+        <div class="seg" id="algoSeg" role="group" aria-label="选择算法">
+        <button data-algo="astar" class="is-active" aria-pressed="true">A* <small>f=g+h</small></button>
+        <button data-algo="dijkstra" aria-pressed="false">Dijkstra <small>f=g</small></button>
+        <button data-algo="greedy" aria-pressed="false">贪婪最佳优先 <small>f=h</small></button>
+        </div>
+      </div>
+
+      <div class="group">
+        <h2>编辑工具</h2>
+        <div class="seg" id="toolSeg" role="group" aria-label="选择编辑工具">
+          <button data-tool="wall" class="is-active" aria-pressed="true">画障碍</button>
+          <button data-tool="erase" aria-pressed="false">擦除</button>
+          <button data-tool="start" aria-pressed="false">设起点</button>
+          <button data-tool="goal" aria-pressed="false">设终点</button>
+        </div>
+        <p class="hint">在地图上按住拖动即可绘制。电脑端可用右键拖动快速擦除。</p>
+      </div>
+
+      <div class="group">
+        <h2>执行</h2>
+        <div class="controls">
+          <button id="run" class="btn btn-primary">▶ 运行</button>
+          <button id="step" class="btn">单步</button>
+          <button id="clearPath" class="btn">清除痕迹</button>
+          <button id="maze" class="btn">随机地图</button>
+          <button id="reset" class="btn">重置</button>
+        </div>
+        <label class="speed">
+          动画速度 <input id="speed" type="range" min="1" max="10" value="6" />
+        </label>
+      </div>
+
+      <div class="group">
+        <h2>实时指标</h2>
+        <dl class="metrics">
+          <div><dt>算法</dt><dd id="mAlgo">A*</dd></div>
+          <div><dt>状态</dt><dd id="mStatus">就绪</dd></div>
+          <div><dt>路径长度</dt><dd id="mLen">—</dd></div>
+          <div><dt>探索节点</dt><dd id="mExpanded">—</dd></div>
+          <div><dt>规划耗时</dt><dd id="mTime">—</dd></div>
+        </dl>
+      </div>
+
+      <div class="group">
+        <h2>算法对比</h2>
+        <button id="compareBtn" class="btn btn-accent">⚡ 对比当前地图上的三种算法</button>
+        <div id="compareWrap" class="compare-wrap" hidden>
+          <table class="compare">
+            <thead><tr><th>算法</th><th>路径长度</th><th>探索节点</th></tr></thead>
+            <tbody id="compareBody"></tbody>
+          </table>
+          <p class="compare-note" id="compareNote"></p>
+        </div>
+      </div>
+
+      <details class="shortcuts">
+        <summary>键盘快捷键</summary>
+        <ul>
+          <li><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> 切换算法</li>
+          <li><kbd>空格</kbd> 运行 / 暂停</li>
+          <li><kbd>S</kbd> 起点工具 · <kbd>G</kbd> 终点工具</li>
+          <li><kbd>C</kbd> 清除痕迹 · <kbd>R</kbd> 重置 · <kbd>M</kbd> 随机地图</li>
+        </ul>
+      </details>
+    </aside>
+  </main>
+
+  <footer class="site-footer">
+    <span>纯前端实现 · 原生画布 + 原生脚本 · 零依赖</span>
+    <a id="repoLink" href="../" rel="noopener">查看源码 ↗</a>
+  </footer>
+
+  <script src="pathfinding.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
